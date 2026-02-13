@@ -121,8 +121,8 @@ Uses the profile as-is without any prompts. Perfect for CI/automation.
 ### Step 1: Set Up Tailscale (on the Mac Mini)
 
 ```bash
-git clone <your-repo-url> ~/openclaw-setup
-cd ~/openclaw-setup
+git clone <your-repo-url> ~/clawgod
+cd ~/clawgod
 chmod +x scripts/tailscale-setup.sh
 
 ./scripts/tailscale-setup.sh \
@@ -138,7 +138,7 @@ ssh thor-mini-1
 ### Step 2: Generate the OpenClaw Instance
 
 ```bash
-cd ~/openclaw-setup
+cd ~/clawgod
 npm run generate
 ```
 
