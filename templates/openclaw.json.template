@@ -1,0 +1,140 @@
+{
+  "agents": [
+    {
+      "id": "executive",
+      "name": "Executive",
+      "model": "anthropic/claude-sonnet-4-20250514",
+      "workspace": "./workspaces/executive",
+      "channels": {
+        "telegram": "tg-executive"
+      },
+      "skills": ["brave-search", "notion"],
+      "description": "Main orchestrator — routes tasks, makes decisions, delegates to specialists"
+    },
+    {
+      "id": "researcher",
+      "name": "Researcher",
+      "model": "anthropic/claude-sonnet-4-20250514",
+      "workspace": "./workspaces/researcher",
+      "channels": {
+        "telegram": "tg-researcher"
+      },
+      "skills": ["brave-search"],
+      "description": "Deep research, market analysis, competitive intelligence, fact-checking"
+    },
+    {
+      "id": "developer",
+      "name": "Developer",
+      "model": "anthropic/claude-sonnet-4-20250514",
+      "workspace": "./workspaces/developer",
+      "channels": {
+        "telegram": "tg-developer"
+      },
+      "skills": ["brave-search"],
+      "description": "Code generation, technical implementation, debugging, architecture"
+    },
+    {
+      "id": "copywriter",
+      "name": "Copywriter",
+      "model": "anthropic/claude-sonnet-4-20250514",
+      "workspace": "./workspaces/copywriter",
+      "channels": {
+        "telegram": "tg-copywriter"
+      },
+      "skills": ["brave-search"],
+      "description": "Content creation, design briefs, social copy, brand voice"
+    },
+    {
+      "id": "pm",
+      "name": "Project Manager",
+      "model": "anthropic/claude-sonnet-4-20250514",
+      "workspace": "./workspaces/pm",
+      "channels": {
+        "telegram": "tg-pm"
+      },
+      "skills": ["brave-search", "notion"],
+      "description": "PRDs, roadmaps, sprint planning, stakeholder updates, project tracking"
+    },
+    {
+      "id": "qa",
+      "name": "QA Engineer",
+      "model": "anthropic/claude-sonnet-4-20250514",
+      "workspace": "./workspaces/qa",
+      "channels": {
+        "telegram": "tg-qa"
+      },
+      "skills": ["brave-search"],
+      "description": "Testing, validation, quality gates, bug tracking, edge case identification"
+    }
+  ],
+  "models": {
+    "default": "anthropic/claude-sonnet-4-20250514",
+    "available": [
+      "anthropic/claude-sonnet-4-20250514",
+      "anthropic/claude-opus-4-20250514"
+    ]
+  },
+  "channels": {
+    "telegram": {
+      "accounts": {
+        "tg-executive": {
+          "botToken": "REPLACE_ME_EXECUTIVE_BOT_TOKEN",
+          "allowedUsers": ["REPLACE_ME_YOUR_TELEGRAM_USER_ID"]
+        },
+        "tg-researcher": {
+          "botToken": "REPLACE_ME_RESEARCHER_BOT_TOKEN",
+          "allowedUsers": ["REPLACE_ME_YOUR_TELEGRAM_USER_ID"]
+        },
+        "tg-developer": {
+          "botToken": "REPLACE_ME_DEVELOPER_BOT_TOKEN",
+          "allowedUsers": ["REPLACE_ME_YOUR_TELEGRAM_USER_ID"]
+        },
+        "tg-copywriter": {
+          "botToken": "REPLACE_ME_COPYWRITER_BOT_TOKEN",
+          "allowedUsers": ["REPLACE_ME_YOUR_TELEGRAM_USER_ID"]
+        },
+        "tg-pm": {
+          "botToken": "REPLACE_ME_PM_BOT_TOKEN",
+          "allowedUsers": ["REPLACE_ME_YOUR_TELEGRAM_USER_ID"]
+        },
+        "tg-qa": {
+          "botToken": "REPLACE_ME_QA_BOT_TOKEN",
+          "allowedUsers": ["REPLACE_ME_YOUR_TELEGRAM_USER_ID"]
+        }
+      }
+    },
+    "discord": {
+      "enabled": false,
+      "accounts": {}
+    }
+  },
+  "skills": {
+    "brave-search": {
+      "type": "brave-search",
+      "apiKey": "REPLACE_ME_BRAVE_SEARCH_API_KEY"
+    },
+    "notion": {
+      "type": "notion",
+      "apiKey": "REPLACE_ME_NOTION_API_KEY",
+      "enabled": false
+    }
+  },
+  "gateway": {
+    "port": 4440,
+    "host": "0.0.0.0",
+    "logLevel": "info",
+    "heartbeat": {
+      "enabled": true,
+      "intervalMinutes": 15
+    },
+    "sessions": {
+      "enabled": true,
+      "maxConcurrent": 10
+    }
+  },
+  "meta": {
+    "company": "{{COMPANY_NAME}}",
+    "domain": "{{DOMAIN_INFO}}",
+    "generatedAt": "{{GENERATED_AT}}"
+  }
+}

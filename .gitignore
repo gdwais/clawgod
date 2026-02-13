@@ -1,0 +1,5 @@
+output/
+notion-board.json
+company-profile.json
+node_modules/
+.DS_Store

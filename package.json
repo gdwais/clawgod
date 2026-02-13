@@ -1,0 +1,13 @@
+{
+  "name": "openclaw-setup",
+  "version": "2.0.0",
+  "description": "OpenClaw multi-agent instance generator and Tailscale setup for Mac Mini fleet",
+  "private": true,
+  "scripts": {
+    "generate": "node scripts/generate-instance.js",
+    "generate:demo": "node scripts/generate-instance.js --profile examples/demo-profile.json --non-interactive --output ./output-demo"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "company": {
+    "name": "ThorUX",
+    "domain": "Content creation and distribution",
+    "targetAudience": "Tech companies, B2B SaaS",
+    "products": "AI-powered content workflows",
+    "stage": "growth",
+    "teamSize": "5-10",
+    "competitors": ["Jasper", "Copy.ai", "Contently"],
+    "brandVoice": "Bold, technical, no-BS",
+    "contentChannels": ["LinkedIn", "Twitter", "Blog"],
+    "techStack": ["Next.js", "Python", "OpenAI APIs"],
+    "positioning": "AI agents that own the full content lifecycle"
+  },
+  "agents": ["executive", "researcher", "developer", "copywriter"]
+}
