@@ -1,4 +1,4 @@
-# OpenClaw Setup — Mac Mini Fleet
+# ClawGod — Multi-Agent OpenClaw Instance Generator
 
 End-to-end tooling for provisioning a Mac Mini with Tailscale and deploying a multi-agent OpenClaw instance.
 
