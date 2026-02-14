@@ -1,258 +1,631 @@
-# ClawGod — Multi-Agent OpenClaw Instance Generator
 
-End-to-end tooling for provisioning a Mac Mini with Tailscale and deploying a multi-agent OpenClaw instance.
+<div align="center">
 
-## What's Inside
+```
+   _____ _                 _____           _
+  / ____| |               / ____|         | |
+ | |    | | __ ___      _| |  __  ___   __| |
+ | |    | |/ _` \ \ /\ / / | |_ |/ _ \ / _` |
+ | |____| | (_| |\ V  V /| |__| | (_) | (_| |
+  \_____|_|\__,_| \_/\_/  \_____|\___/ \__,_|
+```
 
-| File | Purpose |
-|---|---|
-| `scripts/tailscale-setup.sh` | Provisions a fresh Mac Mini with Tailscale + SSH |
-| `scripts/generate-instance.js` | Interactive wizard to generate an OpenClaw config with up to 6 specialized agents |
-| `scripts/create-notion-board.js` | Creates the shared Notion kanban board with full agent workflow schema |
-| `templates/` | Agent workspace templates, config template, and workflow specs |
-| `examples/` | Sample profile for demo/testing |
+**Multi-Agent OpenClaw Instance Generator**
+
+Generate, configure, and deploy a team of AI agents in minutes — not hours.
+
+[![Node](https://img.shields.io/badge/node-%3E%3D18-brightgreen)]()
+[![Dependencies](https://img.shields.io/badge/dependencies-0-blue)]()
+[![License: MIT](https://img.shields.io/badge/license-MIT-yellow)]()
+
+</div>
+
+---
+
+## Features
+
+- 🧙 **Interactive wizard** — guided setup with company profiling and agent selection
+- 🤖 **6 specialized agents** — Executive, Researcher, Developer, Copywriter, PM, QA
+- 📁 **Direct OpenClaw integration** — writes to `~/.openclaw/` by default, ready to `openclaw gateway start`
+- 🔀 **Smart merge** — detects existing installations, offers backup/merge/cancel
+- 📋 **Profile-based generation** — save and reuse company profiles across instances
+- 🚀 **Non-interactive mode** — fully automated for CI/scripting
+- 📡 **Remote deployment** — deploy to Mac Minis via SSH + Tailscale
+- 📦 **Zero dependencies** — pure Node.js built-ins only
+
+---
 
 ## Quick Start
 
 ```bash
-# Interactive wizard — guided setup
-npm run generate
+npm install -g clawgod
+clawgod init
+```
 
-# With a pre-filled profile — review and confirm
-node scripts/generate-instance.js --profile examples/demo-profile.json
+That's it. The wizard walks you through everything and writes directly to `~/.openclaw/`.
+
+---
+
+## Command Reference
+
+### `clawgod init`
+
+Generate a new multi-agent OpenClaw instance.
+
+```bash
+clawgod init [options]
+```
+
+| Flag | Description | Default |
+|---|---|---|
+| `--profile <path>` | Load a pre-filled company profile JSON | — |
+| `--output <dir>` | Write to a custom directory instead of `~/.openclaw/` | `~/.openclaw/` |
+| `--non-interactive` | No prompts — requires `--profile` | `false` |
+
+**Examples:**
+
+```bash
+# Interactive wizard (recommended for first run)
+clawgod init
+
+# Load a profile, confirm interactively
+clawgod init --profile company.json
 
 # Fully automated — no prompts
-node scripts/generate-instance.js --profile examples/demo-profile.json --non-interactive
+clawgod init --profile company.json --non-interactive
 
-# Demo mode
-npm run generate:demo
+# Dry run to a test directory
+clawgod init --output ./test-run
+
+# Automated to a custom location
+clawgod init --profile company.json --non-interactive --output /opt/openclaw
 ```
 
-## Usage Modes
+---
 
-### 1. Interactive (default)
+### `clawgod add-agent`
+
+Add a new agent to an existing instance.
 
 ```bash
-node scripts/generate-instance.js [--output ./output]
+clawgod add-agent [options]
 ```
 
-Walks you through:
-1. **Company Profile** — name, domain, audience, tech stack, brand voice, etc.
-2. **Agent Selection** — toggle each of 6 agents on/off
-3. **Summary & Confirm** — review before generating
+| Flag | Description | Default |
+|---|---|---|
+| `--type <agent>` | Agent type to add (see [Agent Types](#agent-types)) | interactive |
+| `--dir <path>` | Path to existing instance directory | `~/.openclaw/` |
 
-### 2. Profile-based
+**Examples:**
 
 ```bash
-node scripts/generate-instance.js --profile path/to/profile.json [--output ./output]
+# Interactive — shows available agents, lets you pick
+clawgod add-agent
+
+# Add a specific agent
+clawgod add-agent --type pm
+
+# Add to a custom directory
+clawgod add-agent --type qa --dir ./my-instance
 ```
 
-Loads a pre-filled profile and shows it for confirmation. You can still adjust agent selection interactively.
+This command:
+1. Creates the agent workspace with all template files
+2. Adds the agent entry to `openclaw.json`
+3. Adds the Telegram bot account (you'll need to fill in the token)
 
-### 3. Non-interactive
+---
+
+### `clawgod validate`
+
+Validate an OpenClaw instance — checks config, workspaces, and placeholders.
 
 ```bash
-node scripts/generate-instance.js --profile path/to/profile.json --non-interactive [--output ./output]
+clawgod validate [dir]
 ```
 
-Uses the profile as-is without any prompts. Perfect for CI/automation.
+| Argument | Description | Default |
+|---|---|---|
+| `dir` | Path to instance directory | `~/.openclaw/` |
 
-### Example Profile
+**Examples:**
 
-```json
-{
-  "company": {
-    "name": "ThorUX",
-    "domain": "Content creation and distribution",
-    "targetAudience": "Tech companies, B2B SaaS",
-    "products": "AI-powered content workflows",
-    "stage": "growth",
-    "teamSize": "5-10",
-    "competitors": ["Jasper", "Copy.ai", "Contently"],
-    "brandVoice": "Bold, technical, no-BS",
-    "contentChannels": ["LinkedIn", "Twitter", "Blog"],
-    "techStack": ["Next.js", "Python", "OpenAI APIs"],
-    "positioning": "AI agents that own the full content lifecycle"
-  },
-  "agents": ["executive", "researcher", "developer", "copywriter"]
-}
+```bash
+# Validate default installation
+clawgod validate
+
+# Validate a specific directory
+clawgod validate ./test-run
 ```
+
+**What it checks:**
+- ✅ Directory exists
+- ✅ `openclaw.json` is valid JSON
+- ✅ No remaining `REPLACE_ME` placeholders
+- ✅ Every agent has a workspace directory
+- ✅ Workspace directories contain all required files
+
+---
+
+### `clawgod deploy`
+
+Deploy an instance to a remote host via SSH.
+
+```bash
+clawgod deploy
+```
+
+> Requires Tailscale or direct SSH access to the target machine. See [Remote Setup](#remote-setup-tailscale).
+
+---
+
+## How It Works
+
+### What Gets Generated
+
+Running `clawgod init` creates this structure:
+
+```
+~/.openclaw/
+├── openclaw.json              ← Main config (credentials go here)
+├── company-profile.json       ← Saved profile (reusable for re-generation)
+└── workspaces/
+    ├── executive/
+    │   ├── AGENTS.md           ← Agent behavior rules
+    │   ├── SOUL.md             ← Personality and identity
+    │   ├── USER.md             ← Info about the human operator
+    │   ├── IDENTITY.md         ← Role-specific context
+    │   ├── TOOLS.md            ← Tool configuration notes
+    │   ├── HEARTBEAT.md        ← Proactive task scheduling
+    │   ├── BOARD-WORKFLOW.md   ← Shared kanban workflow
+    │   ├── BOOT.md             ← First-run bootstrap (if applicable)
+    │   └── memory/             ← Agent memory (grows over time)
+    ├── researcher/
+    │   └── ...
+    ├── developer/
+    │   └── ...
+    └── copywriter/
+        └── ...
+```
+
+### Workspace Paths
+
+Workspace paths in `openclaw.json` are **absolute** (e.g. `/Users/you/.openclaw/workspaces/executive`). OpenClaw resolves them regardless of your working directory.
+
+When using `--output`, paths point into that directory instead:
+
+```bash
+clawgod init --output ./test-run
+# Config:     ./test-run/openclaw.json
+# Workspaces: ./test-run/workspaces/<agent>/
+```
+
+### Template Processing
+
+Each agent workspace is generated from templates in `templates/agents/<id>/`. Company-specific placeholders like `{{COMPANY_NAME}}`, `{{DOMAIN_INFO}}`, and `{{BRAND_VOICE}}` are replaced with your profile data. The shared `WORKFLOW.md` template is copied to every agent as `BOARD-WORKFLOW.md`.
+
+---
 
 ## Agent Architecture
 
 ```
-┌─────────────────────────────────────────────┐
-│                   Human                      │
-│              (via Telegram)                   │
-└──────────────────┬──────────────────────────┘
-                   │
-          ┌────────▼────────┐
-          │    Executive     │
-          │  (orchestrator)  │
-          └─┬───┬───┬───┬─┬─┘
-            │   │   │   │ │
-   ┌────────▼┐┌─▼──┐┌──▼─▼──┐┌──▼──┐┌──▼──┐
-   │Researcher││Dev ││Copywrt││ PM  ││ QA  │
-   └─────────┘└────┘└───────┘└─────┘└─────┘
+┌──────────────────────────────────────────────┐
+│                    Human                      │
+│               (via Telegram)                  │
+└───────────────────┬──────────────────────────┘
+                    │
+           ┌────────▼────────┐
+           │    Executive     │
+           │  (orchestrator)  │
+           └─┬───┬───┬───┬─┬─┘
+             │   │   │   │ │
+    ┌────────▼┐┌─▼──┐┌──▼─▼──┐┌──▼──┐┌──▼──┐
+    │Researcher││Dev ││Copywrt││ PM  ││ QA  │
+    └─────────┘└────┘└───────┘└─────┘└─────┘
 ```
 
-### Available Agents (6)
+You talk to the **Executive** via Telegram. It delegates tasks to specialist agents, synthesizes their output, and reports back. Each agent has its own Telegram bot, workspace, and persistent memory.
 
-| Agent | ID | Default | Description |
+---
+
+## Agent Types
+
+| Agent | ID | Default | Role |
 |---|---|---|---|
-| **Executive** | `executive` | ✅ ON | Orchestrator — delegation, decision-making, synthesis |
-| **Researcher** | `researcher` | ✅ ON | Market analysis, competitive intel, sourcing, fact-checking |
-| **Developer** | `developer` | ✅ ON | Code, technical implementation, debugging, architecture |
-| **Copywriter** | `copywriter` | ✅ ON | Content, brand voice, social copy, design briefs |
-| **Project Manager** | `pm` | ⬜ OFF | PRDs, roadmaps, sprint planning, stakeholder updates |
-| **QA Engineer** | `qa` | ⬜ OFF | Testing, validation, quality gates, edge cases |
+| **Executive** | `executive` | ✅ ON | Central orchestrator. Routes tasks, makes decisions, delegates to specialists, synthesizes results. Your primary point of contact. |
+| **Researcher** | `researcher` | ✅ ON | Deep research and analysis. Market intelligence, competitive analysis, fact-checking, sourcing, data synthesis. |
+| **Developer** | `developer` | ✅ ON | Technical implementation. Code generation, debugging, architecture decisions, technical documentation. |
+| **Copywriter** | `copywriter` | ✅ ON | Content creation. Brand voice, social media copy, blog posts, design briefs, messaging frameworks. |
+| **Project Manager** | `pm` | ⬜ OFF | Project coordination. PRDs, roadmaps, sprint planning, stakeholder updates, progress tracking. |
+| **QA Engineer** | `qa` | ⬜ OFF | Quality assurance. Testing strategies, validation, edge case identification, quality gates, bug tracking. |
 
-## Full Workflow: Fresh Mac Mini → Running OpenClaw
+Agents marked **ON** are selected by default in the wizard. You can toggle any combination during setup.
 
-### Prerequisites
+---
 
-- A Mac Mini (Apple Silicon, macOS 13+)
-- An Anthropic API key
-- A Tailscale account with an auth key ([generate one here](https://login.tailscale.com/admin/settings/keys))
-- Telegram bots (one per selected agent — create via [@BotFather](https://t.me/BotFather))
-- Your Telegram user ID (get via [@userinfobot](https://t.me/userinfobot))
-- A Brave Search API key ([get one here](https://brave.com/search/api/))
+## Profile Format
 
-### Step 1: Set Up Tailscale (on the Mac Mini)
+Save a JSON profile to skip the wizard or reuse across instances:
 
-```bash
-git clone <your-repo-url> ~/clawgod
-cd ~/clawgod
-chmod +x scripts/tailscale-setup.sh
-
-./scripts/tailscale-setup.sh \
-  --authkey tskey-auth-your-key-here \
-  --hostname thor-mini-1
+```json
+{
+  "company": {
+    "name": "Acme Corp",
+    "domain": "Developer tools and APIs",
+    "targetAudience": "Software engineers, DevOps teams",
+    "products": "API gateway, SDK toolkit, monitoring dashboard",
+    "stage": "growth",
+    "teamSize": "25-50",
+    "competitors": ["Postman", "Kong", "Apigee"],
+    "brandVoice": "Technical, concise, developer-first",
+    "contentChannels": ["Blog", "Twitter", "Dev.to", "YouTube"],
+    "techStack": ["Go", "React", "PostgreSQL", "Kubernetes"],
+    "positioning": "The API platform that developers actually enjoy using"
+  },
+  "agents": ["executive", "researcher", "developer", "copywriter", "pm"]
+}
 ```
 
-After this, SSH from any device on your tailnet:
-```bash
-ssh thor-mini-1
+### Company Fields
+
+| Field | Required | Description |
+|---|---|---|
+| `name` | ✅ | Company or project name |
+| `domain` | ✅ | Industry or domain (e.g. "SaaS", "E-commerce") |
+| `targetAudience` | | Who you're building for |
+| `products` | | Core products or services |
+| `stage` | | Company stage: `seed`, `early`, `growth`, `mature` |
+| `teamSize` | | Approximate team size |
+| `competitors` | | Array of competitor names |
+| `brandVoice` | | How your brand sounds (e.g. "Bold, technical, no-BS") |
+| `contentChannels` | | Array of channels (e.g. `["Blog", "Twitter"]`) |
+| `techStack` | | Array of technologies |
+| `positioning` | | Your unique differentiator |
+
+### Agent Selection
+
+The `agents` array takes agent IDs. Valid values:
+
+```
+executive, researcher, developer, copywriter, pm, qa
 ```
 
-### Step 2: Generate the OpenClaw Instance
+If omitted, defaults to `["executive", "researcher", "developer", "copywriter"]`.
 
-```bash
-cd ~/clawgod
-npm run generate
+---
+
+## Existing Installation Handling
+
+When `~/.openclaw/openclaw.json` already exists, ClawGod detects it and shows what's there:
+
+```
+  ⚠  Existing OpenClaw installation detected
+
+  Current agents:
+    • Executive (executive)
+    • Researcher (researcher)
+    • Developer (developer)
+
+  Company: Acme Corp
+  Generated: 2026-02-13T04:30:00.000Z
+
+  ? What would you like to do?
+    1) Back up existing config and create new
+    2) Merge new agents into existing config
+    3) Cancel
 ```
 
-Follow the interactive wizard. This creates:
-```
-output/
-├── openclaw.json              # Main config (needs credentials)
-├── company-profile.json       # Saved profile (reusable)
-└── workspaces/
-    ├── executive/             # Orchestrator agent workspace
-    ├── researcher/            # Research agent workspace
-    ├── developer/             # Developer agent workspace
-    ├── copywriter/            # Content agent workspace
-    ├── pm/                    # Project manager workspace (if selected)
-    └── qa/                    # QA engineer workspace (if selected)
-```
+### Option 1: Backup & Overwrite
 
-### Step 3: Configure Credentials
+- Copies `openclaw.json` → `openclaw.json.2026-02-13-163042.bak`
+- Generates a fresh config
+- Workspace directories are **not** backed up (they accumulate memory over time)
 
-Edit `output/openclaw.json` and replace all `REPLACE_ME` values:
+### Option 2: Merge
 
-| Placeholder | Where to Get It |
-|---|---|
-| `REPLACE_ME_*_BOT_TOKEN` | @BotFather → create bot → copy token |
-| `REPLACE_ME_YOUR_TELEGRAM_USER_ID` | @userinfobot on Telegram (numeric ID) |
-| `REPLACE_ME_BRAVE_SEARCH_API_KEY` | brave.com/search/api |
-| `REPLACE_ME_NOTION_API_KEY` | notion.so/my-integrations (optional) |
+- Adds new agents to `agents` list (skips if agent ID already exists)
+- Adds new Telegram accounts (skips existing ones)
+- Creates workspace directories only for new agents
+- Preserves everything in the existing config
 
-### Step 4: Install OpenClaw & Deploy
+### Option 3: Cancel
 
-```bash
-npm install -g openclaw
-export ANTHROPIC_API_KEY="sk-ant-..."
+Does nothing.
 
-cp output/openclaw.json ~/.config/openclaw/openclaw.json
-cp -r output/workspaces ~/.config/openclaw/workspaces
+### Non-interactive Mode
 
-openclaw gateway start
-openclaw gateway status
-```
+In `--non-interactive` mode, ClawGod always backs up and overwrites — it never merges automatically.
 
-### Step 5: Test Your Agents
+---
 
-Open Telegram and message each bot. The Executive agent is your primary interface — it can delegate to all others.
+## Notion Board Integration
 
-## Notion Kanban Board
-
-Agents coordinate through a shared Notion board.
+Agents coordinate through a shared Notion kanban board for task tracking.
 
 ### Setup
 
 ```bash
-# Create the board
+# Create the Notion board
 node scripts/create-notion-board.js --parent-page <NOTION_PAGE_ID>
 
-# Re-run generator to distribute notion-board.json to agents
-node scripts/generate-instance.js --profile output/company-profile.json --non-interactive
+# The board ID is saved and agents reference it via WORKFLOW.md
 ```
 
 ### Workflow
 
 ```
 Inbox → In Progress → Review → Done
-          ↑              |
+          ↑              │
           └── Rejected ──┘
 ```
 
 | Status | Who | What |
 |---|---|---|
-| Inbox | Executive | Triage — set priority, type, assign owner |
-| In Progress | Dev / Copy / Researcher / PM | Do the work |
-| Review | **Human** | Approve → Done, or reject → back to In Progress |
-| Done | — | Complete |
-| Blocked | Anyone | Stuck (with explanation in Agent Log) |
+| **Inbox** | Executive | Triage — set priority, type, assign owner |
+| **In Progress** | Specialist agents | Do the work |
+| **Review** | Human | Approve → Done, or reject → back to In Progress |
+| **Done** | — | Complete |
+| **Blocked** | Anyone | Stuck (with explanation in Agent Log) |
 
-**Properties:** Name, Status, Priority, Type, Owner, Labels, Due, Agent Log.
+**Human review gate:** Agents move finished work to Review. Only humans move tickets to Done. This keeps you in the loop without bottlenecking the process.
 
-**Human review gate:** Agents move finished work to Review. Only humans move tickets to Done. This keeps you in the loop without over-engineering the process.
+### Board Properties
 
-### Customizing
+| Property | Type | Purpose |
+|---|---|---|
+| Name | Title | Task description |
+| Status | Select | Workflow stage |
+| Priority | Select | `P0` (critical) → `P3` (low) |
+| Type | Select | `task`, `research`, `content`, `bug`, `feature` |
+| Owner | Select | Assigned agent |
+| Labels | Multi-select | Categorization tags |
+| Due | Date | Deadline |
+| Agent Log | Rich text | Agent notes and progress updates |
 
-Edit `templates/WORKFLOW.md` (shared) or `templates/agents/<agent>/WORKFLOW.md` (per-agent), then re-run the generator.
+---
 
-## Customization
+## Remote Setup (Tailscale)
 
-### Adding More Agents
+For headless Mac Mini deployments with secure remote access.
 
-1. Create a new template directory in `templates/agents/<agent-id>/`
-2. Add the 6 workspace files (AGENTS.md, SOUL.md, USER.md, IDENTITY.md, TOOLS.md, HEARTBEAT.md)
-3. Add the agent to `AGENT_DEFINITIONS` in `scripts/generate-instance.js`
-4. Add entries in `templates/openclaw.json.template`
-5. Re-run the generator
+### Step 1: Provision the Mac Mini
 
-### Reusing a Profile
-
-After generating, `company-profile.json` is saved in the output directory. Use it to regenerate:
 ```bash
-node scripts/generate-instance.js --profile output/company-profile.json --output ./new-output
+# On the Mac Mini
+git clone <your-repo-url> ~/clawgod
+cd ~/clawgod
+chmod +x scripts/tailscale-setup.sh
+
+./scripts/tailscale-setup.sh \
+  --authkey tskey-auth-your-key-here \
+  --hostname agent-mini-1
 ```
 
-### Multiple Mac Minis
+After this, SSH from any device on your tailnet:
 
-Run `tailscale-setup.sh` on each Mini with a unique hostname. Each can run its own OpenClaw instance.
+```bash
+ssh agent-mini-1
+```
 
-## Troubleshooting
+### Step 2: Install & Generate
 
-| Problem | Solution |
+```bash
+# On the Mac Mini (via SSH)
+npm install -g clawgod openclaw
+clawgod init --profile company.json --non-interactive
+```
+
+### Step 3: Configure & Launch
+
+```bash
+# Edit credentials
+nano ~/.openclaw/openclaw.json
+
+# Set API key and start
+export ANTHROPIC_API_KEY="sk-ant-..."
+openclaw gateway start
+```
+
+### Multiple Machines
+
+Run `tailscale-setup.sh` on each Mac Mini with a unique hostname. Each can run its own independent OpenClaw instance with different agent configurations.
+
+---
+
+## Configuration
+
+After generating, edit `~/.openclaw/openclaw.json` and replace all `REPLACE_ME` placeholders:
+
+### Telegram Bot Tokens
+
+Each agent needs its own Telegram bot:
+
+1. Open Telegram and message [@BotFather](https://t.me/BotFather)
+2. Send `/newbot` and follow the prompts
+3. Copy the bot token (format: `123456789:ABCdefGHIjklMNOpqrsTUVwxyz`)
+4. Repeat for each agent
+
+| Placeholder | Agent |
 |---|---|
-| Tailscale won't connect | Check your auth key hasn't expired |
-| Bot not responding | Check bot token, verify gateway is running (`openclaw gateway logs`) |
-| Agent can't find workspace | Ensure workspace paths in openclaw.json match actual directories |
+| `REPLACE_ME_EXECUTIVE_BOT_TOKEN` | Executive |
+| `REPLACE_ME_RESEARCHER_BOT_TOKEN` | Researcher |
+| `REPLACE_ME_DEVELOPER_BOT_TOKEN` | Developer |
+| `REPLACE_ME_COPYWRITER_BOT_TOKEN` | Copywriter |
+| `REPLACE_ME_PM_BOT_TOKEN` | Project Manager |
+| `REPLACE_ME_QA_BOT_TOKEN` | QA Engineer |
 
-## Requirements
+### Telegram User ID
 
-- **macOS** 13+ (Ventura or later)
-- **Node.js** 18+
-- **Zero npm dependencies** — uses only Node built-ins
+Your numeric Telegram user ID (not username):
+
+1. Message [@userinfobot](https://t.me/userinfobot) on Telegram
+2. It replies with your numeric ID
+3. Replace all `REPLACE_ME_YOUR_TELEGRAM_USER_ID` values
+
+This restricts bot access to only you.
+
+### API Keys
+
+| Placeholder | Where to Get It | Required |
+|---|---|---|
+| `REPLACE_ME_BRAVE_SEARCH_API_KEY` | [brave.com/search/api](https://brave.com/search/api/) | Yes |
+| `REPLACE_ME_NOTION_API_KEY` | [notion.so/my-integrations](https://www.notion.so/my-integrations) | No |
+
+### Anthropic API Key
+
+Set as an environment variable (not stored in config):
+
+```bash
+export ANTHROPIC_API_KEY="sk-ant-api03-..."
+
+# Or add to your shell profile
+echo 'export ANTHROPIC_API_KEY="sk-ant-..."' >> ~/.zshrc
+```
+
+---
+
+## FAQ & Troubleshooting
+
+<details>
+<summary><strong>Bot not responding on Telegram</strong></summary>
+
+1. Verify the bot token is correct in `openclaw.json`
+2. Check the gateway is running: `openclaw gateway status`
+3. Check logs: `openclaw gateway logs`
+4. Make sure your Telegram user ID matches `allowedUsers`
+</details>
+
+<details>
+<summary><strong>Agent can't find its workspace</strong></summary>
+
+Run `clawgod validate` to check all workspace paths. Ensure the paths in `openclaw.json` match actual directories. If you moved files, update the `workspace` field for each agent.
+</details>
+
+<details>
+<summary><strong>Can I use this without Telegram?</strong></summary>
+
+Telegram is the default channel, but OpenClaw supports Discord and other channels. Edit `openclaw.json` to configure alternative channels. The generated config includes a disabled Discord section you can enable.
+</details>
+
+<details>
+<summary><strong>How do I update agent templates after generating?</strong></summary>
+
+Edit the files directly in `~/.openclaw/workspaces/<agent>/`. The generated files are yours — ClawGod won't overwrite existing workspaces during a merge. To regenerate from scratch, use backup mode.
+</details>
+
+<details>
+<summary><strong>Can I run multiple instances on one machine?</strong></summary>
+
+Yes. Use `--output` to generate to different directories:
+
+```bash
+clawgod init --output ~/.openclaw-project-a
+clawgod init --output ~/.openclaw-project-b
+```
+
+Each instance runs independently with its own gateway port (edit `gateway.port` in each config).
+</details>
+
+<details>
+<summary><strong>What models are supported?</strong></summary>
+
+The default config uses `anthropic/claude-sonnet-4-20250514`. You can change the model per-agent or globally in `openclaw.json`:
+
+```json
+{
+  "models": {
+    "default": "anthropic/claude-sonnet-4-20250514",
+    "available": [
+      "anthropic/claude-sonnet-4-20250514",
+      "anthropic/claude-opus-4-20250514"
+    ]
+  }
+}
+```
+</details>
+
+<details>
+<summary><strong>Tailscale won't connect</strong></summary>
+
+- Check your auth key hasn't expired (they have a default TTL)
+- Verify Tailscale is running: `tailscale status`
+- Try re-authenticating: `tailscale up --authkey <new-key>`
+</details>
+
+<details>
+<summary><strong>How do I remove an agent?</strong></summary>
+
+1. Delete the agent entry from `agents` array in `openclaw.json`
+2. Delete the Telegram account entry from `channels.telegram.accounts`
+3. Optionally delete the workspace directory (but it contains memory — consider keeping it)
+</details>
+
+---
+
+## Contributing
+
+Contributions welcome! This project has zero external dependencies by design — please keep it that way.
+
+```bash
+# Clone and test
+git clone <repo-url>
+cd clawgod
+
+# Run the wizard locally
+node bin/clawgod.js init --output ./test-output
+
+# Validate your output
+node bin/clawgod.js validate ./test-output
+```
+
+### Adding a New Agent Type
+
+1. Create `templates/agents/<agent-id>/` with workspace files:
+   - `AGENTS.md` — behavior rules and constraints
+   - `SOUL.md` — personality, voice, identity
+   - `USER.md` — information about the human operator
+   - `IDENTITY.md` — role-specific context and responsibilities
+   - `TOOLS.md` — tool configuration and notes
+   - `HEARTBEAT.md` — proactive task definitions
+   - `BOOT.md` — (optional) first-run bootstrap instructions
+2. Add the agent to `AGENT_DEFINITIONS` in `src/utils/config.js`
+3. Add agent and Telegram account entries to `templates/openclaw.json.template`
+4. Test with `clawgod init --output ./test` and `clawgod validate ./test`
+
+### Project Structure
+
+```
+clawgod/
+├── bin/
+│   └── clawgod.js           ← CLI entry point
+├── src/
+│   ├── commands/
+│   │   ├── init.js           ← Instance generation
+│   │   ├── add-agent.js      ← Add agent to existing instance
+│   │   ├── validate.js       ← Config validation
+│   │   └── deploy.js         ← Remote deployment
+│   ├── utils/
+│   │   ├── config.js         ← Agent definitions, placeholder logic
+│   │   └── templates.js      ← File generation, merge logic
+│   └── wizard/
+│       ├── ui.js             ← Colors, formatting, banner
+│       └── prompts.js        ← Interactive input helpers
+├── templates/
+│   ├── openclaw.json.template
+│   ├── WORKFLOW.md
+│   └── agents/
+│       ├── executive/
+│       ├── researcher/
+│       ├── developer/
+│       ├── copywriter/
+│       ├── pm/
+│       └── qa/
+└── examples/
+    └── demo-profile.json
+```
+
+---
+
+## License
+
+MIT — do whatever you want with it.

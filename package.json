@@ -1,13 +1,29 @@
 {
   "name": "clawgod",
-  "version": "2.0.0",
-  "description": "OpenClaw multi-agent instance generator and Tailscale setup for Mac Mini fleet",
-  "private": true,
+  "version": "1.0.0",
+  "description": "Multi-Agent OpenClaw Instance Generator",
+  "bin": {
+    "clawgod": "./bin/clawgod.js"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "templates/",
+    "examples/"
+  ],
   "scripts": {
-    "generate": "node scripts/generate-instance.js",
-    "generate:demo": "node scripts/generate-instance.js --profile examples/demo-profile.json --non-interactive --output ./output-demo"
+    "generate": "node bin/clawgod.js init",
+    "generate:demo": "node bin/clawgod.js init --profile examples/demo-profile.json --non-interactive --output ./output-demo"
   },
   "engines": {
     "node": ">=18.0.0"
-  }
+  },
+  "keywords": [
+    "openclaw",
+    "ai-agents",
+    "multi-agent",
+    "cli"
+  ],
+  "preferGlobal": true,
+  "license": "MIT"
 }

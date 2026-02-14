@@ -1,4 +1,5 @@
 output/
+output-demo/
 notion-board.json
 company-profile.json
 node_modules/
