@@ -17,7 +17,9 @@ const AGENT_DEFINITIONS = [
   { id: 'executive',  name: 'Executive',       desc: 'Orchestrator — delegation, decision-making, synthesis',     defaultOn: true },
   { id: 'researcher', name: 'Researcher',      desc: 'Market analysis, competitive intel, sourcing, fact-checking', defaultOn: true },
   { id: 'developer',  name: 'Developer',       desc: 'Code, technical implementation, debugging, architecture',   defaultOn: true },
-  { id: 'copywriter', name: 'Copywriter',      desc: 'Content, brand voice, social copy, design briefs',          defaultOn: true },
+  { id: 'content-creator', name: 'Content Creator',      desc: 'Blog posts, articles, email sequences, whitepapers, scripts, ad copy', defaultOn: true },
+  { id: 'brand-manager',   name: 'Brand Manager',        desc: 'Brand governance, voice consistency, content review',                defaultOn: false },
+  { id: 'social-media',    name: 'Social Media Manager', desc: 'Social media strategy, platform-specific content, distribution',     defaultOn: false },
   { id: 'pm',         name: 'Project Manager', desc: 'PRDs, roadmaps, sprint planning, stakeholder updates',      defaultOn: false },
   { id: 'qa',         name: 'QA Engineer',     desc: 'Testing, validation, quality gates, edge cases',            defaultOn: false },
 ];
@@ -357,7 +359,7 @@ function loadProfile(profilePath) {
       techStack: data.techStack || [],
       positioning: data.positioning || '',
     },
-    agents: data.agents || ['executive', 'researcher', 'developer', 'copywriter'],
+    agents: data.agents || ['executive', 'researcher', 'developer', 'content-creator'],
   };
 }
 

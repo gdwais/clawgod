@@ -7,11 +7,13 @@
   },
   "files": [
     "bin/",
-    "src/",
+    "dist/",
     "templates/",
     "examples/"
   ],
   "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
     "generate": "node bin/clawgod.js init",
     "generate:demo": "node bin/clawgod.js init --profile examples/demo-profile.json --non-interactive --output ./output-demo"
   },
@@ -25,5 +27,9 @@
     "cli"
   ],
   "preferGlobal": true,
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^25.2.3",
+    "typescript": "^5.7.0"
+  }
 }

@@ -12,5 +12,5 @@
     "techStack": ["Next.js", "Python", "OpenAI APIs"],
     "positioning": "AI agents that own the full content lifecycle"
   },
-  "agents": ["executive", "researcher", "developer", "copywriter"]
+  "agents": ["executive", "researcher", "developer", "content-creator"]
 }

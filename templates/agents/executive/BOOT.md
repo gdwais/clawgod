@@ -49,7 +49,9 @@ curl -X POST 'https://api.notion.com/v1/databases' \
         { "name": "Executive", "color": "blue" },
         { "name": "Researcher", "color": "purple" },
         { "name": "Developer", "color": "orange" },
-        { "name": "Copywriter", "color": "green" },
+        { "name": "Content Creator", "color": "green" },
+        { "name": "Brand Manager", "color": "brown" },
+        { "name": "Social Media", "color": "default" },
         { "name": "PM", "color": "yellow" },
         { "name": "QA", "color": "pink" },
         { "name": "Human", "color": "gray" }

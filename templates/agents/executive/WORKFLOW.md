@@ -10,7 +10,7 @@ Query Inbox and Blocked tickets. Triage new ones, escalate blocked ones.
 
 For each Inbox ticket:
 1. Set Priority, Type
-2. Assign Owner (Researcher/Developer/Copywriter/PM)
+2. Assign Owner (Researcher/Developer/Content Creator/Brand Manager/Social Media/PM)
 3. Move to In Progress
 4. Log: `[Executive - YYYY-MM-DD HH:mm] Triaged: Priority=X, Type=Y → Owner`
 

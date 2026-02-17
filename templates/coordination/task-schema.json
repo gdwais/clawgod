@@ -1,0 +1,27 @@
+{
+  "$schema": "task-v1",
+  "id": "TASK-C001",
+  "department": "content",
+  "title": "",
+  "type": "blog-post",
+  "status": "inbox",
+  "priority": "P1",
+  "owner": null,
+  "createdBy": "executive",
+  "createdAt": "",
+  "updatedAt": "",
+  "dueAt": null,
+  "context": {
+    "brief": "",
+    "references": [],
+    "targetChannels": [],
+    "audience": ""
+  },
+  "artifacts": [],
+  "history": [],
+  "reviewGate": false,
+  "iterationCount": 0,
+  "maxIterations": 3,
+  "crossDeptRef": null,
+  "notionPageId": null
+}

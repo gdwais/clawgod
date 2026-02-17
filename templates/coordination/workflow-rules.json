@@ -1,0 +1,27 @@
+{
+  "crossDepartmentTriggers": [
+    {
+      "sourceEvent": "deployed",
+      "sourceDept": "engineering",
+      "targetDept": "content",
+      "createTask": {
+        "type": "blog-post",
+        "titleTemplate": "Announce: {{taskTitle}}",
+        "status": "inbox",
+        "priority": "P2"
+      }
+    },
+    {
+      "sourceEvent": "measurement-complete",
+      "sourceDept": "growth",
+      "targetDept": "content",
+      "condition": "results.recommendation === 'scale'",
+      "createTask": {
+        "type": "social-campaign",
+        "titleTemplate": "Scale campaign: {{taskTitle}}",
+        "status": "inbox",
+        "priority": "P1"
+      }
+    }
+  ]
+}

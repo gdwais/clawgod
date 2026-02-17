@@ -34,26 +34,48 @@
       "description": "Code generation, technical implementation, debugging, architecture"
     },
     {
-      "id": "copywriter",
-      "name": "Copywriter",
+      "id": "content-creator",
+      "name": "Content Creator",
       "model": "anthropic/claude-sonnet-4-20250514",
-      "workspace": "./workspaces/copywriter",
+      "workspace": "./workspaces/content-creator",
       "channels": {
-        "telegram": "tg-copywriter"
+        "telegram": "tg-content-creator"
       },
       "skills": ["brave-search"],
-      "description": "Content creation, design briefs, social copy, brand voice"
+      "description": "Blog posts, articles, email sequences, whitepapers, scripts, ad copy"
     },
     {
-      "id": "pm",
-      "name": "Project Manager",
+      "id": "brand-manager",
+      "name": "Brand Manager",
       "model": "anthropic/claude-sonnet-4-20250514",
-      "workspace": "./workspaces/pm",
+      "workspace": "./workspaces/brand-manager",
       "channels": {
-        "telegram": "tg-pm"
+        "telegram": "tg-brand-manager"
+      },
+      "skills": ["brave-search"],
+      "description": "Brand governance, voice consistency, content review"
+    },
+    {
+      "id": "distribution-manager",
+      "name": "Distribution Manager",
+      "model": "anthropic/claude-sonnet-4-20250514",
+      "workspace": "./workspaces/distribution-manager",
+      "channels": {
+        "telegram": "tg-distribution-manager"
+      },
+      "skills": ["brave-search"],
+      "description": "Multi-channel distribution — social, email, community, forums"
+    },
+    {
+      "id": "ops-manager",
+      "name": "Ops Manager",
+      "model": "anthropic/claude-sonnet-4-20250514",
+      "workspace": "./workspaces/ops-manager",
+      "channels": {
+        "telegram": "tg-ops-manager"
       },
       "skills": ["brave-search", "notion"],
-      "description": "PRDs, roadmaps, sprint planning, stakeholder updates, project tracking"
+      "description": "Board hygiene, sprint management, task tracking, status reports"
     },
     {
       "id": "qa",
@@ -65,6 +87,39 @@
       },
       "skills": ["brave-search"],
       "description": "Testing, validation, quality gates, bug tracking, edge case identification"
+    },
+    {
+      "id": "data-analyst",
+      "name": "Data Analyst",
+      "model": "anthropic/claude-sonnet-4-20250514",
+      "workspace": "./workspaces/data-analyst",
+      "channels": {
+        "telegram": "tg-data-analyst"
+      },
+      "skills": ["brave-search"],
+      "description": "KPIs, campaign measurement, performance reports, feedback loop"
+    },
+    {
+      "id": "seo-specialist",
+      "name": "SEO Specialist",
+      "model": "anthropic/claude-sonnet-4-20250514",
+      "workspace": "./workspaces/seo-specialist",
+      "channels": {
+        "telegram": "tg-seo-specialist"
+      },
+      "skills": ["brave-search"],
+      "description": "Keyword research, content optimization, technical SEO, SERP tracking"
+    },
+    {
+      "id": "customer-success",
+      "name": "Customer Success",
+      "model": "anthropic/claude-sonnet-4-20250514",
+      "workspace": "./workspaces/customer-success",
+      "channels": {
+        "telegram": "tg-customer-success"
+      },
+      "skills": ["brave-search"],
+      "description": "Support triage, FAQ maintenance, onboarding docs, feedback collection"
     }
   ],
   "models": {
@@ -89,16 +144,36 @@
           "botToken": "REPLACE_ME_DEVELOPER_BOT_TOKEN",
           "allowedUsers": ["REPLACE_ME_YOUR_TELEGRAM_USER_ID"]
         },
-        "tg-copywriter": {
-          "botToken": "REPLACE_ME_COPYWRITER_BOT_TOKEN",
+        "tg-content-creator": {
+          "botToken": "REPLACE_ME_CONTENT_CREATOR_BOT_TOKEN",
           "allowedUsers": ["REPLACE_ME_YOUR_TELEGRAM_USER_ID"]
         },
-        "tg-pm": {
-          "botToken": "REPLACE_ME_PM_BOT_TOKEN",
+        "tg-brand-manager": {
+          "botToken": "REPLACE_ME_BRAND_MANAGER_BOT_TOKEN",
+          "allowedUsers": ["REPLACE_ME_YOUR_TELEGRAM_USER_ID"]
+        },
+        "tg-distribution-manager": {
+          "botToken": "REPLACE_ME_DISTRIBUTION_MANAGER_BOT_TOKEN",
+          "allowedUsers": ["REPLACE_ME_YOUR_TELEGRAM_USER_ID"]
+        },
+        "tg-ops-manager": {
+          "botToken": "REPLACE_ME_OPS_MANAGER_BOT_TOKEN",
           "allowedUsers": ["REPLACE_ME_YOUR_TELEGRAM_USER_ID"]
         },
         "tg-qa": {
           "botToken": "REPLACE_ME_QA_BOT_TOKEN",
+          "allowedUsers": ["REPLACE_ME_YOUR_TELEGRAM_USER_ID"]
+        },
+        "tg-data-analyst": {
+          "botToken": "REPLACE_ME_DATA_ANALYST_BOT_TOKEN",
+          "allowedUsers": ["REPLACE_ME_YOUR_TELEGRAM_USER_ID"]
+        },
+        "tg-seo-specialist": {
+          "botToken": "REPLACE_ME_SEO_SPECIALIST_BOT_TOKEN",
+          "allowedUsers": ["REPLACE_ME_YOUR_TELEGRAM_USER_ID"]
+        },
+        "tg-customer-success": {
+          "botToken": "REPLACE_ME_CUSTOMER_SUCCESS_BOT_TOKEN",
           "allowedUsers": ["REPLACE_ME_YOUR_TELEGRAM_USER_ID"]
         }
       }

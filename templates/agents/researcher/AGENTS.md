@@ -60,3 +60,19 @@ Every research deliverable should include:
 - Don't fabricate sources or data
 - Don't present AI-generated analysis as cited research
 - Flag when you're speculating vs. reporting
+
+## Task Queue Protocol
+
+On each session, check for assigned work:
+
+1. Check your department's task directory in `shared/tasks/` for tasks where `owner` matches your agent ID and status is active
+2. Work on the highest-priority task first (P0 > P1 > P2)
+3. Update the task file: append to `history`, update `status` and `updatedAt`
+4. When done, write a completion event to `shared/events/`:
+   ```json
+   {"event": "<transition-name>", "taskId": "TASK-XXX", "agent": "<your-id>", "timestamp": "...", "details": {}}
+   ```
+5. If blocked, write a blocked event explaining why
+6. Save artifacts to task-referenced locations
+
+Read `shared/config/departments.json` to understand the state machine for your department(s).

@@ -1,0 +1,68 @@
+{
+  "departments": {
+    "content": {
+      "name": "Content Pipeline",
+      "notionBoardId": null,
+      "agents": ["researcher", "content-creator", "brand-manager", "distribution-manager", "seo-specialist"],
+      "statuses": ["inbox", "research", "drafting", "brand-review", "human-approval", "publishing", "done", "revision"],
+      "reviewGates": ["human-approval"],
+      "taskTypes": ["blog-post", "article", "email-sequence", "whitepaper", "social-campaign", "seo-content"],
+      "autoTransitions": {
+        "research-complete": { "from": "research", "to": "drafting", "assignTo": "content-creator" },
+        "draft-complete": { "from": "drafting", "to": "brand-review", "assignTo": "brand-manager" },
+        "brand-approved": { "from": "brand-review", "to": "human-approval", "assignTo": "human" },
+        "brand-rejected": { "from": "brand-review", "to": "revision", "assignTo": "content-creator" },
+        "revision-complete": { "from": "revision", "to": "brand-review", "assignTo": "brand-manager" },
+        "human-approved": { "from": "human-approval", "to": "publishing", "assignTo": "distribution-manager" },
+        "published": { "from": "publishing", "to": "done" }
+      }
+    },
+    "engineering": {
+      "name": "Engineering Board",
+      "notionBoardId": null,
+      "agents": ["developer", "qa", "ops-manager"],
+      "statuses": ["backlog", "in-progress", "code-review", "qa", "human-approval", "deployed", "done", "fix-required"],
+      "reviewGates": ["human-approval"],
+      "taskTypes": ["feature", "bug", "refactor", "infrastructure", "documentation"],
+      "autoTransitions": {
+        "implementation-complete": { "from": "in-progress", "to": "code-review", "assignTo": "executive" },
+        "code-approved": { "from": "code-review", "to": "qa", "assignTo": "qa" },
+        "qa-passed": { "from": "qa", "to": "human-approval", "assignTo": "human" },
+        "qa-failed": { "from": "qa", "to": "fix-required", "assignTo": "developer" },
+        "fix-complete": { "from": "fix-required", "to": "qa", "assignTo": "qa" },
+        "human-approved": { "from": "human-approval", "to": "deployed", "assignTo": "developer" },
+        "deployed": { "from": "deployed", "to": "done" }
+      }
+    },
+    "growth": {
+      "name": "Growth Board",
+      "notionBoardId": null,
+      "agents": ["researcher", "data-analyst", "distribution-manager"],
+      "statuses": ["inbox", "research", "strategy", "execution", "measuring", "done"],
+      "reviewGates": [],
+      "taskTypes": ["campaign", "analysis", "experiment", "report"],
+      "autoTransitions": {
+        "research-complete": { "from": "research", "to": "strategy", "assignTo": "executive" },
+        "strategy-approved": { "from": "strategy", "to": "execution", "assignTo": "distribution-manager" },
+        "execution-complete": { "from": "execution", "to": "measuring", "assignTo": "data-analyst" },
+        "measurement-complete": { "from": "measuring", "to": "done" }
+      }
+    },
+    "operations": {
+      "name": "Operations Board",
+      "notionBoardId": null,
+      "agents": ["executive", "ops-manager", "customer-success"],
+      "statuses": ["inbox", "planning", "in-progress", "review", "done"],
+      "reviewGates": ["review"],
+      "taskTypes": ["task", "planning", "support", "process"],
+      "autoTransitions": {}
+    }
+  },
+  "settings": {
+    "heartbeatMinutes": 15,
+    "staleTaskHours": 2,
+    "maxReminders": 3,
+    "maxIterations": 3,
+    "eventRetentionDays": 30
+  }
+}

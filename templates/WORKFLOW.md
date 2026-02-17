@@ -15,7 +15,7 @@ Inbox → In Progress → Review → Done
 | Status | Who | What happens |
 |---|---|---|
 | **Inbox** | Executive | Triage: set Priority, Type, Owner. Route forward. |
-| **In Progress** | Developer / Copywriter / Researcher / PM | Do the work. Log progress. |
+| **In Progress** | Developer / Content Creator / Brand Manager / Social Media / Researcher / PM | Do the work. Log progress. |
 | **Review** | Human | Human approves → Done. Rejects → back to In Progress with notes. |
 | **Done** | — | Complete. |
 | **Blocked** | Anyone | Stuck. Explain in Agent Log. |

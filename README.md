@@ -25,7 +25,7 @@ Generate, configure, and deploy a team of AI agents in minutes — not hours.
 ## Features
 
 - 🧙 **Interactive wizard** — guided setup with company profiling and agent selection
-- 🤖 **6 specialized agents** — Executive, Researcher, Developer, Copywriter, PM, QA
+- 🤖 **8 specialized agents** — Executive, Researcher, Developer, Content Creator, Brand Manager, Social Media Manager, PM, QA
 - 📁 **Direct OpenClaw integration** — writes to `~/.openclaw/` by default, ready to `openclaw gateway start`
 - 🔀 **Smart merge** — detects existing installations, offers backup/merge/cancel
 - 📋 **Profile-based generation** — save and reuse company profiles across instances
@@ -184,7 +184,11 @@ Running `clawgod init` creates this structure:
     │   └── ...
     ├── developer/
     │   └── ...
-    └── copywriter/
+    ├── content-creator/
+    │   └── ...
+    ├── brand-manager/
+    │   └── ...
+    └── social-media/
         └── ...
 ```
 
@@ -217,11 +221,12 @@ Each agent workspace is generated from templates in `templates/agents/<id>/`. Co
            ┌────────▼────────┐
            │    Executive     │
            │  (orchestrator)  │
-           └─┬───┬───┬───┬─┬─┘
-             │   │   │   │ │
-    ┌────────▼┐┌─▼──┐┌──▼─▼──┐┌──▼──┐┌──▼──┐
-    │Researcher││Dev ││Copywrt││ PM  ││ QA  │
-    └─────────┘└────┘└───────┘└─────┘└─────┘
+           └─┬───┬───┬───┬───┬───┬─┬─┘
+             │   │   │   │   │   │ │
+    ┌────────▼┐┌─▼──┐┌──▼────┐┌─▼───┐┌──▼───┐┌─▼──┐┌──▼──┐
+    │Researcher││Dev ││Content ││Brand ││Social ││ PM ││ QA  │
+    └─────────┘└────┘│Creator ││Mgr   ││Media  │└────┘└─────┘
+                     └────────┘└──────┘└──────┘
 ```
 
 You talk to the **Executive** via Telegram. It delegates tasks to specialist agents, synthesizes their output, and reports back. Each agent has its own Telegram bot, workspace, and persistent memory.
@@ -235,7 +240,9 @@ You talk to the **Executive** via Telegram. It delegates tasks to specialist age
 | **Executive** | `executive` | ✅ ON | Central orchestrator. Routes tasks, makes decisions, delegates to specialists, synthesizes results. Your primary point of contact. |
 | **Researcher** | `researcher` | ✅ ON | Deep research and analysis. Market intelligence, competitive analysis, fact-checking, sourcing, data synthesis. |
 | **Developer** | `developer` | ✅ ON | Technical implementation. Code generation, debugging, architecture decisions, technical documentation. |
-| **Copywriter** | `copywriter` | ✅ ON | Content creation. Brand voice, social media copy, blog posts, design briefs, messaging frameworks. |
+| **Content Creator** | `content-creator` | ✅ ON | Content writing. Blog posts, articles, email sequences, whitepapers, scripts, ad copy. |
+| **Brand Manager** | `brand-manager` | ⬜ OFF | Brand governance. Voice consistency, content review, messaging alignment, brand guidelines. |
+| **Social Media Manager** | `social-media` | ⬜ OFF | Social distribution. Platform-specific content, posting strategy, engagement, analytics. |
 | **Project Manager** | `pm` | ⬜ OFF | Project coordination. PRDs, roadmaps, sprint planning, stakeholder updates, progress tracking. |
 | **QA Engineer** | `qa` | ⬜ OFF | Quality assurance. Testing strategies, validation, edge case identification, quality gates, bug tracking. |
 
@@ -262,7 +269,7 @@ Save a JSON profile to skip the wizard or reuse across instances:
     "techStack": ["Go", "React", "PostgreSQL", "Kubernetes"],
     "positioning": "The API platform that developers actually enjoy using"
   },
-  "agents": ["executive", "researcher", "developer", "copywriter", "pm"]
+  "agents": ["executive", "researcher", "developer", "content-creator", "brand-manager", "social-media", "pm"]
 }
 ```
 
@@ -287,10 +294,10 @@ Save a JSON profile to skip the wizard or reuse across instances:
 The `agents` array takes agent IDs. Valid values:
 
 ```
-executive, researcher, developer, copywriter, pm, qa
+executive, researcher, developer, content-creator, brand-manager, social-media, pm, qa
 ```
 
-If omitted, defaults to `["executive", "researcher", "developer", "copywriter"]`.
+If omitted, defaults to `["executive", "researcher", "developer", "content-creator"]`.
 
 ---
 
@@ -450,7 +457,9 @@ Each agent needs its own Telegram bot:
 | `REPLACE_ME_EXECUTIVE_BOT_TOKEN` | Executive |
 | `REPLACE_ME_RESEARCHER_BOT_TOKEN` | Researcher |
 | `REPLACE_ME_DEVELOPER_BOT_TOKEN` | Developer |
-| `REPLACE_ME_COPYWRITER_BOT_TOKEN` | Copywriter |
+| `REPLACE_ME_CONTENT_CREATOR_BOT_TOKEN` | Content Creator |
+| `REPLACE_ME_BRAND_MANAGER_BOT_TOKEN` | Brand Manager |
+| `REPLACE_ME_SOCIAL_MEDIA_BOT_TOKEN` | Social Media Manager |
 | `REPLACE_ME_PM_BOT_TOKEN` | Project Manager |
 | `REPLACE_ME_QA_BOT_TOKEN` | QA Engineer |
 
@@ -617,7 +626,9 @@ clawgod/
 │       ├── executive/
 │       ├── researcher/
 │       ├── developer/
-│       ├── copywriter/
+│       ├── content-creator/
+│       ├── brand-manager/
+│       ├── social-media/
 │       ├── pm/
 │       └── qa/
 └── examples/
