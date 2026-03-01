@@ -247,7 +247,7 @@ export default async function init(argv: string[]): Promise<void> {
 
     header('🔧 Generating');
     console.log(`  ${dim(`Output: ${outputDir}`)}\n`);
-    generate(data.company, data.agents, outputDir, { mode: 'overwrite' });
+    generate(data.company, data.agents, outputDir, { mode: 'overwrite' }, data);
     showNextSteps(outputDir, data.agents);
     return;
   }
@@ -273,12 +273,12 @@ export default async function init(argv: string[]): Promise<void> {
         if (!ok2) { console.log('\n  Cancelled.\n'); process.exit(0); }
         header('🔧 Generating');
         console.log(`  ${dim(`Output: ${outputDir}`)}\n`);
-        generate(data.company, agents, outputDir, { mode });
+        generate(data.company, agents, outputDir, { mode }, data);
         showNextSteps(outputDir, agents);
       } else {
         header('🔧 Generating');
         console.log(`  ${dim(`Output: ${outputDir}`)}\n`);
-        generate(data.company, data.agents, outputDir, { mode });
+        generate(data.company, data.agents, outputDir, { mode }, data);
         showNextSteps(outputDir, data.agents);
       }
       return;

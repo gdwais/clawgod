@@ -24,10 +24,25 @@ export interface AgentDefinition {
   department?: string[];
 }
 
+export interface CronJobDef {
+  time: string;
+  agent: string;
+  task: string;
+  day?: string;
+}
+
+export interface CronSchedule {
+  timezone: string;
+  daily: CronJobDef[];
+  weekly: CronJobDef[];
+}
+
 export interface ProfileData {
   company: CompanyProfile;
   agents: string[];
   generatedAt?: string;
+  agentModels?: Record<string, string>;
+  cronSchedule?: CronSchedule;
 }
 
 export interface GenerateOptions {

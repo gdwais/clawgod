@@ -18,6 +18,10 @@ export const AGENT_DEFINITIONS: AgentDefinition[] = [
   { id: 'data-analyst',         name: 'Data Analyst',         desc: 'KPIs, campaign measurement, performance reports, feedback loop',              defaultOn: false, department: ['growth'] },
   { id: 'seo-specialist',       name: 'SEO Specialist',       desc: 'Keyword research, content optimization, technical SEO, SERP tracking',       defaultOn: false, department: ['content'] },
   { id: 'customer-success',     name: 'Customer Success',     desc: 'Support triage, FAQ maintenance, onboarding docs, feedback collection',      defaultOn: false, department: ['operations'] },
+  { id: 'architect',             name: 'Architect',             desc: 'System design, PRD review, technical feasibility, code review',              defaultOn: false, department: ['engineering'] },
+  { id: 'growth-engine',        name: 'Growth Engine',        desc: 'Copywriter + campaign operator — social, email, ads, all in founder voice',  defaultOn: false, department: ['growth'] },
+  { id: 'intel-engine',         name: 'Intel Engine',         desc: 'Lead gen, competitor intel, market research, contact databases',              defaultOn: false, department: ['growth'] },
+  { id: 'pr-engine',            name: 'PR Engine',            desc: 'Conferences, awards, podcasts, journalists, speaking opportunities',          defaultOn: false, department: ['pr'] },
 ];
 
 export const AGENT_FILES: string[] = ['AGENTS.md', 'SOUL.md', 'USER.md', 'IDENTITY.md', 'TOOLS.md', 'HEARTBEAT.md', 'WORKFLOW.md'];

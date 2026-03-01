@@ -120,6 +120,50 @@
       },
       "skills": ["brave-search"],
       "description": "Support triage, FAQ maintenance, onboarding docs, feedback collection"
+    },
+    {
+      "id": "architect",
+      "name": "Architect",
+      "model": "anthropic/claude-sonnet-4-20250514",
+      "workspace": "./workspaces/architect",
+      "channels": {
+        "telegram": "tg-architect"
+      },
+      "skills": ["brave-search"],
+      "description": "System design, PRD review, technical feasibility, code review"
+    },
+    {
+      "id": "growth-engine",
+      "name": "Growth Engine",
+      "model": "anthropic/claude-sonnet-4-20250514",
+      "workspace": "./workspaces/growth-engine",
+      "channels": {
+        "telegram": "tg-growth-engine"
+      },
+      "skills": ["brave-search"],
+      "description": "Copywriter + campaign operator — social, email, ads, all in founder voice"
+    },
+    {
+      "id": "intel-engine",
+      "name": "Intel Engine",
+      "model": "anthropic/claude-sonnet-4-20250514",
+      "workspace": "./workspaces/intel-engine",
+      "channels": {
+        "telegram": "tg-intel-engine"
+      },
+      "skills": ["brave-search"],
+      "description": "Lead gen, competitor intel, market research, contact databases"
+    },
+    {
+      "id": "pr-engine",
+      "name": "PR Engine",
+      "model": "anthropic/claude-sonnet-4-20250514",
+      "workspace": "./workspaces/pr-engine",
+      "channels": {
+        "telegram": "tg-pr-engine"
+      },
+      "skills": ["brave-search"],
+      "description": "Conferences, awards, podcasts, journalists, speaking opportunities"
     }
   ],
   "models": {
@@ -174,6 +218,22 @@
         },
         "tg-customer-success": {
           "botToken": "REPLACE_ME_CUSTOMER_SUCCESS_BOT_TOKEN",
+          "allowedUsers": ["REPLACE_ME_YOUR_TELEGRAM_USER_ID"]
+        },
+        "tg-architect": {
+          "botToken": "REPLACE_ME_ARCHITECT_BOT_TOKEN",
+          "allowedUsers": ["REPLACE_ME_YOUR_TELEGRAM_USER_ID"]
+        },
+        "tg-growth-engine": {
+          "botToken": "REPLACE_ME_GROWTH_ENGINE_BOT_TOKEN",
+          "allowedUsers": ["REPLACE_ME_YOUR_TELEGRAM_USER_ID"]
+        },
+        "tg-intel-engine": {
+          "botToken": "REPLACE_ME_INTEL_ENGINE_BOT_TOKEN",
+          "allowedUsers": ["REPLACE_ME_YOUR_TELEGRAM_USER_ID"]
+        },
+        "tg-pr-engine": {
+          "botToken": "REPLACE_ME_PR_ENGINE_BOT_TOKEN",
           "allowedUsers": ["REPLACE_ME_YOUR_TELEGRAM_USER_ID"]
         }
       }
